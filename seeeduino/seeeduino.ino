@@ -49,7 +49,7 @@ void loop() {
   light_bright = readAngle();
   lightProcess();
   showDisplay();
-  lcdLightProcess();
+//  lcdLightProcess();
 //  delay(500);
 }
 
