@@ -16,8 +16,10 @@ const int DIGITAL_LED = 9;
 const int DIGITAL_LCD_1 = 10;
 const int DIGITAL_LCD_2 = 11;
 const int DIGITAL_MOTION = 12;
+const int DIGITAL_BUTTON = 5;
 
 float light_bright = 50;
+boolean buttonState = false;
 
 SerialLCD slcd(DIGITAL_LCD_1, DIGITAL_LCD_2);
 DHT dht(DIGITAL_TEM_HUM, DHT11);
@@ -33,6 +35,7 @@ void setup() {
 //  irrecv.enableIRIn();
 
   pinMode(DIGITAL_MOTION, INPUT); 
+  pinMode(DIGITAL_BUTTON, INPUT); 
   pinMode(DIGITAL_RELAY,OUTPUT);
   pinMode(DIGITAL_LED,OUTPUT);
   
@@ -46,10 +49,11 @@ void setup() {
 }
 
 void loop() {
+  buttonState = readBtn();
   light_bright = readAngle();
   lightProcess();
   showDisplay();
-//  lcdLightProcess();
+  lcdLightProcess();
 //  delay(500);
 }
 
@@ -146,20 +150,32 @@ void lightProcess(){
   }
 }
 
+boolean readBtn(){
+  if(digitalRead(DIGITAL_BUTTON) == HIGH){
+    Serial.println("Button: true");
+    return true;
+  }else{
+    Serial.println("Button false");
+    return false;
+  }
+}
+
 boolean lcdStatus = false;
-int lcdDelay = 5;
+int lcdDelay = 10;
 int lcdCurrent = 0;
 
 void lcdLightProcess(){
   if(!lcdStatus){
-    if(readMotion()){
+    if(buttonState){
       slcd.backlight();
       lcdStatus = true;
       lcdCurrent = 0;
+      buttonState = false;
     }
   }else{
-    if(readMotion()){
+    if(buttonState){
       lcdCurrent = 0;
+      buttonState = false;
     }
     if(lcdCurrent < lcdDelay){
       lcdCurrent++;
