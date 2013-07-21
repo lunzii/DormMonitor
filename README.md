@@ -1,11 +1,12 @@
 基于Seeeduino的卧室监控小物件
 
+监控室内的温度湿度、噪音分贝、灯光亮度，黑暗环境下检测到人体活动即自动开灯。
+
 Arduino：
 	IDE：1.5
 	Library：Humidity_Temperature_Sensor、New_SerialLCD_Library_
 
 硬件清单：
-
 Seeeduino Starter kit
 http://www.seeedstudio.com/wiki/GROVE_-_Starter_Kit_V1.1b
 
